@@ -345,7 +345,10 @@ function ejecutarDano(a, d, n, dmg, esCritico) {
 
   if (d.hp <= 0) {
     const visorDefensor = document.getElementById(`visor-p${n}`);
-    if (visorDefensor) visorDefensor.classList.add('muerto');
+    if (visorDefensor) {
+      visorDefensor.classList.add('muerto');
+      console.log(`Luchador en visor ${n} ha muerto.`);
+    }
     fin(a);
   }
 }
@@ -365,6 +368,7 @@ function fin(ganador) {
   if (visorGanador) {
     visorGanador.classList.remove('muerto');
     visorGanador.classList.add('ganador');
+    console.log(`Luchador en visor ${ganador.visor} es el ganador.`);
   }
   const esPerfect = ganador.hp === ganador.maxHp;
   const textoPerfect = esPerfect ? ' <br><span style="color: #ffff00; font-size: 2em; text-shadow: 0 0 10px #ff0000; font-family: \'Fuente\', sans-serif;">✨ ¡PERFECT! ✨</span><br>' : '';
