@@ -1,5 +1,5 @@
-# LND
-Repositorio para la clase de Lenguaje de Marcas y Sistemas de Gestión de la Información.
+# IKF
+Repositorio para la clase de Informática y Digitalización de 1º de Bachilleraton.
 En este proyecto trabajaremos de forma colaborativa para crear una web entre todos.
 En este ejercicio cada alumno creará una ficha de personaje siguiendo estas indicaciones:
 
@@ -26,11 +26,11 @@ Abre tu archivo `.html` y modifica los campos siguiendo estas instrucciones:
   No borres ni modifiques los atributos `id` (ej: `id="puntos-vida"`).  
   El motor del juego busca esas etiquetas exactas para leer tus datos.
 
-- **Regla de los 150 puntos:**  
-  La suma de **Vida (HP) + Ataque (ATK) + Velocidad (SPD)** debe ser exactamente **150**.
+- **Regla de los 300 puntos:**  
+  La suma de **Vida (HP) + Ataque (ATK) + Velocidad (SPD)** debe ser exactamente **300**.
 
   - **Ejemplo válido:**  
-    Vida 60 + Ataque 60 + Velocidad 30 = 150.
+    Vida 120 + Ataque 120 + Velocidad 60 = 300.
 
   - **Importante:**  
     En los `<span>` escribe **solo el número**.  
