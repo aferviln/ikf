@@ -237,34 +237,37 @@ function crearVisor(p, n) {
 function atacar(a, d, n, esSegundoGolpe = false) {
   if (a.hp <= 0 || d.hp <= 0) return;
 
-  // 1. SISTEMA DE ESQUIVA: 15% de probabilidad
-  const esquiva = Math.random() < 0.15;
+  // 1. ESQUIVA BASADA EN VELOCIDAD: Más SPD = Más esquiva (máx ~30%)
+  const probEsquiva = Math.min(0.35, d.spd / 400);
+  const esquiva = Math.random() < probEsquiva;
   if (esquiva) {
-    log.innerHTML += `<span style="color: #aaa;">💨 ${a.nombre} falló el golpe (${d.nombre} esquivó).</span><br>`;
+    log.innerHTML += `<span style="color: #aaa;">💨 ${d.nombre} esquivó el ataque gracias a su velocidad.</span><br>`;
     log.scrollTop = log.scrollHeight;
     return;
   }
 
   // 2. DAÑO VARIABLE: +/- 25%
   const baseDmg = a.atk - Math.floor(d.spd / 4);
-  const factorAleatorio = 0.75 + Math.random() * 0.5; // Multiplicador entre 0.75 y 1.25
+  const factorAleatorio = 0.75 + Math.random() * 0.5;
   let dmg = Math.floor(Math.max(5, baseDmg * factorAleatorio));
 
-  // 3. CRÍTICOS: 10% de probabilidad (x1.5)
-  const esCritico = Math.random() < 0.10;
+  // 3. CRÍTICOS BASADOS EN VELOCIDAD: Más SPD = Más precisión crítica (máx ~25%)
+  const probCritico = 0.05 + (a.spd / 600);
+  const esCritico = Math.random() < probCritico;
   if (esCritico) {
     dmg = Math.floor(dmg * 1.5);
   }
 
   ejecutarDano(a, d, n, dmg, esCritico);
 
-  // 4. DOBLE GOLPE: 10% de probabilidad (solo si no es ya un segundo golpe)
+  // 4. DOBLE GOLPE BASADO EN VELOCIDAD: (máx ~25%)
   if (!esSegundoGolpe && d.hp > 0) {
-    const dobleGolpe = Math.random() < 0.10;
+    const probDoble = 0.05 + (a.spd / 500);
+    const dobleGolpe = Math.random() < probDoble;
     if (dobleGolpe) {
       setTimeout(() => {
         if (a.hp > 0 && d.hp > 0) {
-          log.innerHTML += `<span style="color: #ffcc00;">⚡ ¡${a.nombre} se enfurece y golpea OTRA VEZ!</span><br>`;
+          log.innerHTML += `<span style="color: #ffcc00;">⚡ ¡Velocidad extrema! ${a.nombre} golpea OTRA VEZ.</span><br>`;
           atacar(a, d, n, true);
         }
       }, 450);
@@ -314,7 +317,9 @@ function actualizarBarra(p, n) {
 
 function fin(ganador) {
   clearInterval(pelea);
-  log.innerHTML += `<strong>🏆 GANA ${ganador.nombre}</strong><br><br>`;
+  const esPerfect = ganador.hp === ganador.maxHp;
+  const textoPerfect = esPerfect ? ' <br><span style="color: #ffff00; font-size: 2em; text-shadow: 0 0 10px #ff0000; font-family: \'Fuente\', sans-serif;">✨ ¡PERFECT! ✨</span><br>' : '';
+  log.innerHTML += `<strong>🏆 GANA ${ganador.nombre}</strong>${textoPerfect}<br><br>`;
 }
 
 function reiniciarCombate() {
