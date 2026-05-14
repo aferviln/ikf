@@ -49,6 +49,15 @@ function handleRoute() {
 async function cargarLuchadores() {
   if (cargando) return;
   cargando = true;
+
+  const overlay = document.getElementById('pantalla-carga');
+  const barra = document.getElementById('barra-progreso');
+  const textoCarga = document.getElementById('texto-carga');
+
+  if (overlay) overlay.style.display = 'flex';
+  if (barra) barra.style.width = '0%';
+  if (textoCarga) textoCarga.innerText = '0%';
+
   contenedor.innerHTML = '';
   try {
     const res = await fetch('participantes.txt?v=' + Date.now());
@@ -58,6 +67,9 @@ async function cargarLuchadores() {
       .split('\n')
       .map(line => line.trim())
       .filter(line => line && line.toLowerCase() !== 'index');
+
+    const total = nombresLuchadores.length;
+    let cargados = 0;
 
     for (const nombreArchivo of nombresLuchadores) {
       try {
@@ -103,6 +115,15 @@ async function cargarLuchadores() {
 
         contenedor.innerHTML += fichaHTML;
 
+        // ACTUALIZAR PROGRESO
+        cargados++;
+        const pct = Math.floor((cargados / total) * 100);
+        if (barra) barra.style.width = pct + '%';
+        if (textoCarga) textoCarga.innerText = pct + '%';
+
+        // Pequeño retardo para dar efecto visual
+        await new Promise(r => setTimeout(r, 100));
+
       } catch (err) {
         console.error(`Error cargando ${nombreArchivo}.html:`, err);
       }
@@ -111,6 +132,10 @@ async function cargarLuchadores() {
     console.error('No se pudo cargar participantes.txt', err);
   } finally {
     cargando = false;
+    // Ocultar pantalla de carga
+    setTimeout(() => {
+      if (overlay) overlay.style.display = 'none';
+    }, 500);
   }
 }
 
@@ -217,7 +242,7 @@ function iniciarCombate() {
 
     // Turno del primero
     atacar(p1, p2, 2);
-
+    
     // El segundo solo ataca si sigue vivo
     setTimeout(() => {
       if (p2.hp > 0 && p1.hp > 0) {
@@ -328,13 +353,18 @@ function fin(ganador) {
 }
 
 function reiniciarCombate() {
+  console.log("Reiniciando combate...");
   if (pelea) clearInterval(pelea);
+  
   // Resetear vida de los luchadores seleccionados
-  seleccionados.forEach(p => {
-    p.hp = p.maxHp;
-  });
-  iniciarCombate();
+  if (seleccionados.length === 2) {
+    seleccionados.forEach(p => {
+      p.hp = p.maxHp;
+    });
+    iniciarCombate();
+  }
 }
+window.reiniciarCombate = reiniciarCombate;
 
 function volverAlMenu() {
   console.log("Volviendo al menú...");
@@ -345,3 +375,4 @@ function volverAlMenu() {
   contenedor.innerHTML = '';
   window.location.hash = '';
 }
+window.volverAlMenu = volverAlMenu;
