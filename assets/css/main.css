@@ -294,16 +294,24 @@ button:active,
 /* Estados Finales con alta prioridad */
 #arena-combate div.muerto {
     position: relative;
-    filter: grayscale(1) sepia(0.5) brightness(0.3) blur(1px) !important;
-    opacity: 0.5 !important;
+    opacity: 0.85 !important;
     border: 3px solid #600 !important;
-    background: rgba(100, 0, 0, 0.3) !important;
+    background: rgba(80, 0, 0, 0.4) !important;
     transform: scale(0.95);
     transition: all 1.5s ease-in-out;
     overflow: hidden;
 }
 
-/* Cruz de Eliminado con animación */
+/* Aplicar el blur y gris solo al contenido, no a la cruz */
+#arena-combate div.muerto > img,
+#arena-combate div.muerto > h3,
+#arena-combate div.muerto > p,
+#arena-combate div.muerto > .barra {
+    filter: grayscale(1) sepia(0.5) brightness(0.3) blur(2px) !important;
+    transition: all 1.5s ease-in-out;
+}
+
+/* Cruz de Eliminado con animación (nítida) */
 @keyframes aparecerCruz {
     from { opacity: 0; transform: translate(-50%, -50%) scale(2) rotate(0deg); }
     to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(45deg); }
