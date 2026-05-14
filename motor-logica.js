@@ -58,7 +58,7 @@ async function cargarLuchadores() {
 
     for (const nombreArchivo of nombresLuchadores) {
       try {
-        const resHtml = await fetch(`personajes/${nombreArchivo}.html?v=` + Date.now());
+        const resHtml = await fetch(`${nombreArchivo}.html?v=` + Date.now());
         const htmlText = await resHtml.text();
 
         const parser = new DOMParser();
@@ -81,7 +81,7 @@ async function cargarLuchadores() {
             fileName = fileName.replace(/\.png$/i, '.jpg');
           }
         }
-        img = `assets/images/characters/${fileName}`;
+        img = fileName;
 
         // GENERACIÓN DE TARJETAS: Layout responsivo y centrado
         const fichaHTML = `
@@ -118,7 +118,7 @@ async function mostrarFicha(nombreArchivo) {
   vistaFicha.style.display = 'block';
 
   try {
-    const res = await fetch(`personajes/${nombreArchivo}.html?v=` + Date.now());
+    const res = await fetch(`${nombreArchivo}.html?v=` + Date.now());
     let htmlText = await res.text();
 
     const parser = new DOMParser();
@@ -149,7 +149,7 @@ async function mostrarFicha(nombreArchivo) {
           fileName = fileName.replace(/\.png$/i, '.jpg');
         }
       }
-      img.src = `assets/images/characters/${fileName}`;
+      img.src = fileName;
     });
 
     vistaFicha.innerHTML = '';

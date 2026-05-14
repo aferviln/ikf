@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personaje: [NOMBRE_PERSONAJE]</title>
+    <link rel="stylesheet" href="assets/css/personajes.css">
+</head>
+
+<body>
+
+    <div class="contenedor-ficha">
+
+        <header>
+            <h1 id="nombre-luchador">[NOMBRE_PERSONAJE]</h1>
+            <p>Clase: <strong id="clase-personaje">[CLASE_PERSONAJE]</strong></p>
+        </header>
+
+        <section>
+            <img id="imagen-luchador" src="[IMAGEN].jpg" alt="Imagen del Luchador">
+        </section>
+
+        <section class="stats">
+            <h2>Atributos de Combate</h2>
+            <ul>
+                <li>Vida (HP): <span id="puntos-vida">100</span></li>
+                <li>Ataque (ATK): <span id="puntos-ataque">20</span></li>
+                <li>Velocidad (SPD): <span id="puntos-velocidad">100</span></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Biografía</h2>
+            <p id="historia-personaje">
+                [DESCRIPCION_E_HISTORIA_DEL_PERSONAJE]
+            </p>
+
+            <p><strong>Habilidad Especial:</strong> <span id="habilidad-nombre">[NOMBRE_HABILIDAD]</span></p>
+        </section>
+
+        <hr>
+
+        <footer style="margin-top: 20px; font-size: 0.85em; color: #555; line-height: 1.4;">
+            <h3>Metodología de Creación</h3>
+
+            <p><strong>Concepto:</strong> [CONCEPTO_DEL_PERSONAJE]</p>
+            <p><strong>Herramientas de IA:</strong></p>
+            <ul>
+                <li>Generación de Imagen: <em>[HERRAMIENTA_IA_IMAGEN]</em></li>
+                <li>Generación de Historia: <em>[HERRAMIENTA_IA_TEXTO]</em></li>
+            </ul>
+
+            <p><strong>Prompt de Imagen:</strong>
+                <code style="background: #eee; padding: 2px 5px; border-radius: 4px;">
+                    "[PROMPT_UTILIZADO_PARA_LA_IMAGEN]"
+                </code>
+            </p>
+
+            <p><strong>Prompt de Historia:</strong>
+                <code style="background: #eee; padding: 2px 5px; border-radius: 4px;">
+                    "[PROMPT_UTILIZADO_PARA_LA_HISTORIA]"
+                </code>
+            </p>
+
+            <p><strong>Autor:</strong> [TU_NOMBRE]</p>
+        </footer>
+
+    </div>
+</body>
+
+</html>
