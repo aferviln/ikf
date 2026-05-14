@@ -212,7 +212,7 @@ function iniciarCombate() {
 
     // Turno del primero
     atacar(p1, p2, 2);
-    
+
     // El segundo solo ataca si sigue vivo
     setTimeout(() => {
       if (p2.hp > 0 && p1.hp > 0) {
@@ -245,27 +245,27 @@ function atacar(a, d, n, esSegundoGolpe = false) {
     return;
   }
 
-  // 2. DAÑO MUY VARIABLE: +/- 50%
+  // 2. DAÑO VARIABLE: +/- 25%
   const baseDmg = a.atk - Math.floor(d.spd / 4);
-  const factorAleatorio = 0.5 + Math.random() * 1.0; 
+  const factorAleatorio = 0.75 + Math.random() * 0.5; // Multiplicador entre 0.75 y 1.25
   let dmg = Math.floor(Math.max(5, baseDmg * factorAleatorio));
 
-  // 3. CRÍTICOS POTENTES: 20% de probabilidad (x2.0)
-  const esCritico = Math.random() < 0.20;
+  // 3. CRÍTICOS: 10% de probabilidad (x1.5)
+  const esCritico = Math.random() < 0.10;
   if (esCritico) {
-    dmg = Math.floor(dmg * 2.0);
+    dmg = Math.floor(dmg * 1.5);
   }
 
   ejecutarDano(a, d, n, dmg, esCritico);
 
-  // 4. DOBLE GOLPE: 15% de probabilidad (solo si no es ya un segundo golpe)
+  // 4. DOBLE GOLPE: 10% de probabilidad (solo si no es ya un segundo golpe)
   if (!esSegundoGolpe && d.hp > 0) {
-    const dobleGolpe = Math.random() < 0.15;
+    const dobleGolpe = Math.random() < 0.10;
     if (dobleGolpe) {
       setTimeout(() => {
         if (a.hp > 0 && d.hp > 0) {
           log.innerHTML += `<span style="color: #ffcc00;">⚡ ¡${a.nombre} se enfurece y golpea OTRA VEZ!</span><br>`;
-          atacar(a, d, n, true); 
+          atacar(a, d, n, true);
         }
       }, 450);
     }
@@ -294,7 +294,7 @@ function ejecutarDano(a, d, n, dmg, esCritico) {
   }
 
   actualizarBarra(d, n);
-  const textoCritico = esCritico ? ' <strong style="color: #ff0000; font-size: 1.3em; text-shadow: 0 0 10px red;">¡CRÍTICO TOTAL!</strong>' : '';
+  const textoCritico = esCritico ? ' <strong style="color: #ff0000; font-size: 1.2em;">¡CRÍTICO!</strong>' : '';
   log.innerHTML += `${a.nombre} golpea por ${dmg}${textoCritico}<br>`;
   log.scrollTop = log.scrollHeight;
 
