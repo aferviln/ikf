@@ -1,0 +1,102 @@
+/* TEMA 3: GLASSMORPHISM / FUTURISTIC CRISTAL */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenedor-ficha {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 40px;
+    max-width: 850px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.contenedor-ficha:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 45px 0 rgba(31, 38, 135, 0.5);
+    transform: translateY(-10px);
+}
+
+header h1 {
+    font-weight: 800;
+    font-size: 3.5em;
+    background: linear-gradient(to right, #fff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+#clase-personaje {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.stats {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 20px;
+    margin: 30px 0;
+    padding: 25px !important;
+}
+
+.stats ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+}
+
+.stats li {
+    text-align: center;
+}
+
+.stats span {
+    display: block;
+    font-size: 2em;
+    font-weight: 800;
+    color: #818cf8;
+}
+
+img {
+    border-radius: 20px;
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    transition: all 0.6s ease;
+}
+
+.contenedor-ficha:hover img {
+    mask-image: none;
+    -webkit-mask-image: none;
+    transform: scale(1.05);
+}
+
+#historia-personaje {
+    font-size: 1.1em;
+    line-height: 1.7;
+    opacity: 0.9;
+}
+
+footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 30px;
+    padding-top: 20px;
+    opacity: 0.6;
+    font-size: 0.85em;
+}
+
+footer strong {
+    color: #a5b4fc;
+}

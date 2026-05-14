@@ -231,7 +231,17 @@ function crearVisor(p, n) {
 }
 
 function atacar(a, d, n) {
-  const dmg = Math.max(5, a.atk - Math.floor(d.spd / 4));
+  // CÁLCULO DE DAÑO ALEATORIO: Base + Variación (+/- 40%)
+  const baseDmg = a.atk - Math.floor(d.spd / 4);
+  const factorAleatorio = 0.6 + Math.random() * 0.8; // Multiplicador entre 0.6 y 1.4
+  let dmg = Math.floor(Math.max(5, baseDmg * factorAleatorio));
+
+  // SISTEMA DE CRÍTICOS: 10% de probabilidad de hacer x1.5 de daño
+  const esCritico = Math.random() < 0.15;
+  if (esCritico) {
+    dmg = Math.floor(dmg * 1.5);
+  }
+
   d.hp -= dmg;
   const el = document.getElementById(`hp${n}`);
   if (el) el.innerText = Math.max(0, d.hp);
@@ -252,7 +262,8 @@ function atacar(a, d, n) {
   }
 
   actualizarBarra(d, n);
-  log.innerHTML += `${a.nombre} ataca (-${dmg})<br>`;
+  const textoCritico = esCritico ? ' <strong style="color: #ff0000; font-size: 1.2em;">¡CRÍTICO!</strong>' : '';
+  log.innerHTML += `${a.nombre} ataca (-${dmg})${textoCritico}<br>`;
   log.scrollTop = log.scrollHeight;
 }
 

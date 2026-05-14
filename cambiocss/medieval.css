@@ -1,0 +1,113 @@
+/* TEMA 2: MEDIEVAL SCROLL */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=MedievalSharp&family=Quattrocento:wght@400;700&display=swap');
+
+body {
+    background-color: #2c1e14;
+    background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
+    font-family: 'Quattrocento', serif;
+    color: #4a3728;
+}
+
+.contenedor-ficha {
+    background-color: #f4e4bc;
+    background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 50px;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 100px rgba(0,0,0,0.2) inset;
+    border: 1px solid #d4b483;
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+.contenedor-ficha::before, .contenedor-ficha::after {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 100%;
+    left: 0;
+    background: #d4b483;
+    border-radius: 10px;
+}
+
+.contenedor-ficha::before { top: -10px; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
+.contenedor-ficha::after { bottom: -10px; box-shadow: 0 -5px 10px rgba(0,0,0,0.3); }
+
+.contenedor-ficha:hover {
+    transform: translateY(-5px) rotate(0.5deg);
+}
+
+header h1 {
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    color: #5c4033;
+    font-size: 3em;
+    border-bottom: 2px double #d4b483;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+#clase-personaje {
+    font-family: 'MedievalSharp', cursive;
+    color: #8b4513;
+    display: block;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.stats {
+    background: rgba(139, 69, 19, 0.05);
+    border: 1px solid #d4b483;
+    margin: 30px 0;
+    padding: 15px !important;
+}
+
+.stats ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.stats li {
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stats span {
+    color: #8b4513;
+    font-size: 1.3em;
+}
+
+img {
+    border: 8px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: rotate(-2deg);
+    transition: all 0.5s ease;
+    filter: sepia(0.3);
+}
+
+.contenedor-ficha:hover img {
+    transform: rotate(0deg) scale(1.05);
+    filter: sepia(0);
+}
+
+#historia-personaje {
+    font-style: italic;
+    line-height: 1.6;
+    column-count: 1;
+    text-align: justify;
+}
+
+footer {
+    font-family: 'Cinzel', serif;
+    border-top: 1px solid #d4b483;
+    color: #8a735d;
+    font-size: 0.9em;
+}
+
+footer h3 {
+    text-align: center;
+}
