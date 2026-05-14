@@ -8,6 +8,7 @@ const visor2 = document.getElementById('visor-p2');
 
 let seleccionados = [];
 let pelea = null;
+let cargando = false;
 
 // =========================
 // ROUTER & NAVEGACIÓN
@@ -46,6 +47,8 @@ function handleRoute() {
 // CARGAR LUCHADORES
 // =========================
 async function cargarLuchadores() {
+  if (cargando) return;
+  cargando = true;
   contenedor.innerHTML = '';
   try {
     const res = await fetch('participantes.txt?v=' + Date.now());
@@ -106,6 +109,8 @@ async function cargarLuchadores() {
     }
   } catch (err) {
     console.error('No se pudo cargar participantes.txt', err);
+  } finally {
+    cargando = false;
   }
 }
 
@@ -332,9 +337,11 @@ function reiniciarCombate() {
 }
 
 function volverAlMenu() {
+  console.log("Volviendo al menú...");
   if (pelea) clearInterval(pelea);
   seleccionados = [];
+  
+  // Limpiamos el contenedor para que handleRoute sepa que debe recargar
+  contenedor.innerHTML = '';
   window.location.hash = '';
-  // Recargar luchadores para resetear estados visuales (botones de selección)
-  cargarLuchadores();
 }
