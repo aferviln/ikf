@@ -317,6 +317,19 @@ function fin(ganador) {
   log.innerHTML += `<strong>🏆 GANA ${ganador.nombre}</strong><br><br>`;
 }
 
-function reiniciar() {
-  window.location.reload();
+function reiniciarCombate() {
+  if (pelea) clearInterval(pelea);
+  // Resetear vida de los luchadores seleccionados
+  seleccionados.forEach(p => {
+    p.hp = p.maxHp;
+  });
+  iniciarCombate();
+}
+
+function volverAlMenu() {
+  if (pelea) clearInterval(pelea);
+  seleccionados = [];
+  window.location.hash = '';
+  // Recargar luchadores para resetear estados visuales (botones de selección)
+  cargarLuchadores();
 }
