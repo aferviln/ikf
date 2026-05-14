@@ -293,12 +293,37 @@ button:active,
 
 /* Estados Finales con alta prioridad */
 #arena-combate div.muerto {
+    position: relative;
     filter: grayscale(1) sepia(0.5) brightness(0.3) blur(1px) !important;
     opacity: 0.5 !important;
     border: 3px solid #600 !important;
     background: rgba(100, 0, 0, 0.3) !important;
     transform: scale(0.95);
     transition: all 0.8s ease;
+    overflow: hidden;
+}
+
+/* Cruz de Eliminado */
+#arena-combate div.muerto::before,
+#arena-combate div.muerto::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 8px;
+    background: rgba(255, 0, 0, 0.7);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    z-index: 999;
+    pointer-events: none;
+}
+
+#arena-combate div.muerto::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#arena-combate div.muerto::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 #arena-combate div.ganador {
