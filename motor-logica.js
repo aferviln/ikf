@@ -204,19 +204,23 @@ function iniciarCombate() {
   if (pelea) clearInterval(pelea);
 
   pelea = setInterval(() => {
-    // Primer atacante
+    // Si alguien ya murió, detener el intervalo
+    if (p1.hp <= 0 || p2.hp <= 0) {
+      clearInterval(pelea);
+      return;
+    }
+
+    // Turno del primero
     atacar(p1, p2, 2);
-    if (p2.hp <= 0) { fin(p1); return; }
-
-    // El segundo atacante espera 500ms para que no se solapen las animaciones
+    
+    // El segundo solo ataca si sigue vivo
     setTimeout(() => {
-      if (pelea) { // Verificar que el combate no haya terminado ya
+      if (p2.hp > 0 && p1.hp > 0) {
         atacar(p2, p1, 1);
-        if (p1.hp <= 0) { fin(p2); }
       }
-    }, 500);
+    }, 600);
 
-  }, 1200); // Un poco más de tiempo para que de tiempo a todo
+  }, 1500); // Intervalo un poco más largo para permitir dobles golpes
 }
 
 function crearVisor(p, n) {
@@ -230,23 +234,52 @@ function crearVisor(p, n) {
   `;
 }
 
-function atacar(a, d, n) {
-  // CÁLCULO DE DAÑO ALEATORIO: Base + Variación (+/- 40%)
-  const baseDmg = a.atk - Math.floor(d.spd / 4);
-  const factorAleatorio = 0.6 + Math.random() * 0.8; // Multiplicador entre 0.6 y 1.4
-  let dmg = Math.floor(Math.max(5, baseDmg * factorAleatorio));
+function atacar(a, d, n, esSegundoGolpe = false) {
+  if (a.hp <= 0 || d.hp <= 0) return;
 
-  // SISTEMA DE CRÍTICOS: 10% de probabilidad de hacer x1.5 de daño
-  const esCritico = Math.random() < 0.15;
-  if (esCritico) {
-    dmg = Math.floor(dmg * 1.5);
+  // 1. SISTEMA DE ESQUIVA: 15% de probabilidad
+  const esquiva = Math.random() < 0.15;
+  if (esquiva) {
+    log.innerHTML += `<span style="color: #aaa;">💨 ${a.nombre} falló el golpe (${d.nombre} esquivó).</span><br>`;
+    log.scrollTop = log.scrollHeight;
+    return;
   }
 
-  d.hp -= dmg;
-  const el = document.getElementById(`hp${n}`);
-  if (el) el.innerText = Math.max(0, d.hp);
+  // 2. DAÑO MUY VARIABLE: +/- 50%
+  const baseDmg = a.atk - Math.floor(d.spd / 4);
+  const factorAleatorio = 0.5 + Math.random() * 1.0; 
+  let dmg = Math.floor(Math.max(5, baseDmg * factorAleatorio));
 
-  // DISPARO DE ANIMACIONES: Se aplican clases CSS de lunge y shake
+  // 3. CRÍTICOS POTENTES: 20% de probabilidad (x2.0)
+  const esCritico = Math.random() < 0.20;
+  if (esCritico) {
+    dmg = Math.floor(dmg * 2.0);
+  }
+
+  ejecutarDano(a, d, n, dmg, esCritico);
+
+  // 4. DOBLE GOLPE: 15% de probabilidad (solo si no es ya un segundo golpe)
+  if (!esSegundoGolpe && d.hp > 0) {
+    const dobleGolpe = Math.random() < 0.15;
+    if (dobleGolpe) {
+      setTimeout(() => {
+        if (a.hp > 0 && d.hp > 0) {
+          log.innerHTML += `<span style="color: #ffcc00;">⚡ ¡${a.nombre} se enfurece y golpea OTRA VEZ!</span><br>`;
+          atacar(a, d, n, true); 
+        }
+      }, 450);
+    }
+  }
+}
+
+function ejecutarDano(a, d, n, dmg, esCritico) {
+  d.hp -= dmg;
+  if (d.hp <= 0) d.hp = 0;
+
+  const el = document.getElementById(`hp${n}`);
+  if (el) el.innerText = d.hp;
+
+  // Animaciones
   const idAtacante = (n === 1) ? 2 : 1;
   const imgAtacante = document.getElementById(`img-luchador-${idAtacante}`);
   const imgDefensor = document.getElementById(`img-luchador-${n}`);
@@ -255,16 +288,19 @@ function atacar(a, d, n) {
     imgAtacante.classList.add(`animacion-ataque-p${idAtacante}`);
     setTimeout(() => imgAtacante.classList.remove(`animacion-ataque-p${idAtacante}`), 800);
   }
-
   if (imgDefensor) {
     imgDefensor.classList.add('animacion-golpe');
     setTimeout(() => imgDefensor.classList.remove('animacion-golpe'), 800);
   }
 
   actualizarBarra(d, n);
-  const textoCritico = esCritico ? ' <strong style="color: #ff0000; font-size: 1.2em;">¡CRÍTICO!</strong>' : '';
-  log.innerHTML += `${a.nombre} ataca (-${dmg})${textoCritico}<br>`;
+  const textoCritico = esCritico ? ' <strong style="color: #ff0000; font-size: 1.3em; text-shadow: 0 0 10px red;">¡CRÍTICO TOTAL!</strong>' : '';
+  log.innerHTML += `${a.nombre} golpea por ${dmg}${textoCritico}<br>`;
   log.scrollTop = log.scrollHeight;
+
+  if (d.hp <= 0) {
+    fin(a);
+  }
 }
 
 function actualizarBarra(p, n) {
