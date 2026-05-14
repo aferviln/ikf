@@ -220,37 +220,43 @@ function iniciarCombate() {
   window.location.hash = '#combate';
   log.innerHTML = '';
 
-  // Ordenar por velocidad
-  seleccionados.sort((a, b) => b.spd - a.spd);
+  // 1. Aleatorizar posiciones visuales (quién sale a la izquierda y quién a la derecha)
+  const visuales = [...seleccionados].sort(() => Math.random() - 0.5);
+  const [pIzq, pDer] = visuales;
 
-  const [p1, p2] = seleccionados;
+  // Guardamos en qué visor está cada uno para las animaciones
+  pIzq.visor = 1;
+  pDer.visor = 2;
 
-  visor1.innerHTML = crearVisor(p1, 1);
-  visor2.innerHTML = crearVisor(p2, 2);
+  visor1.innerHTML = crearVisor(pIzq, 1);
+  visor2.innerHTML = crearVisor(pDer, 2);
 
-  actualizarBarra(p1, 1);
-  actualizarBarra(p2, 2);
+  actualizarBarra(pIzq, 1);
+  actualizarBarra(pDer, 2);
+
+  // 2. Determinar orden real de ataque por velocidad
+  const ordenAtaque = [...seleccionados].sort((a, b) => b.spd - a.spd);
+  const [luchador1, luchador2] = ordenAtaque;
 
   if (pelea) clearInterval(pelea);
 
   pelea = setInterval(() => {
-    // Si alguien ya murió, detener el intervalo
-    if (p1.hp <= 0 || p2.hp <= 0) {
+    if (luchador1.hp <= 0 || luchador2.hp <= 0) {
       clearInterval(pelea);
       return;
     }
 
-    // Turno del primero
-    atacar(p1, p2, 2);
+    // Turno del más rápido
+    atacar(luchador1, luchador2, luchador2.visor);
     
-    // El segundo solo ataca si sigue vivo
+    // Turno del segundo
     setTimeout(() => {
-      if (p2.hp > 0 && p1.hp > 0) {
-        atacar(p2, p1, 1);
+      if (luchador2.hp > 0 && luchador1.hp > 0) {
+        atacar(luchador2, luchador1, luchador1.visor);
       }
     }, 600);
 
-  }, 1500); // Intervalo un poco más largo para permitir dobles golpes
+  }, 1500);
 }
 
 function crearVisor(p, n) {
