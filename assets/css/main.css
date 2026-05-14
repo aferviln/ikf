@@ -291,6 +291,23 @@ button:active,
     animation: ataque-p2 0.8s ease-in-out;
 }
 
+/* Estados Finales */
+.muerto {
+    filter: grayscale(1) sepia(0.3) brightness(0.4) !important;
+    opacity: 0.6;
+    transition: all 1s ease;
+    border-color: #600 !important;
+}
+
+.ganador {
+    border-color: #ffcc00 !important;
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.4);
+    transform: scale(1.05);
+    transition: all 1s ease;
+    background: rgba(255, 204, 0, 0.15) !important;
+    z-index: 10;
+}
+
 
 @font-face {
     font-family: "Fuente";

@@ -220,14 +220,22 @@ function iniciarCombate() {
   window.location.hash = '#combate';
   log.innerHTML = '';
 
-  // 1. Aleatorizar posiciones visuales (quién sale a la izquierda y quién a la derecha)
-  const visuales = [...seleccionados].sort(() => Math.random() - 0.5);
-  const [pIzq, pDer] = visuales;
+  // 1. Aleatorizar posiciones visuales con un swap explícito
+  let pIzq = seleccionados[0];
+  let pDer = seleccionados[1];
 
-  // Guardamos en qué visor está cada uno para las animaciones
+  if (Math.random() < 0.5) {
+    pIzq = seleccionados[1];
+    pDer = seleccionados[0];
+  }
+
+  // Guardamos en qué visor está cada uno para las animaciones y estilos
   pIzq.visor = 1;
   pDer.visor = 2;
 
+  // Limpiar estados previos de los visores
+  visor1.className = '';
+  visor2.className = '';
   visor1.innerHTML = crearVisor(pIzq, 1);
   visor2.innerHTML = crearVisor(pDer, 2);
 
@@ -246,10 +254,8 @@ function iniciarCombate() {
       return;
     }
 
-    // Turno del más rápido
     atacar(luchador1, luchador2, luchador2.visor);
     
-    // Turno del segundo
     setTimeout(() => {
       if (luchador2.hp > 0 && luchador1.hp > 0) {
         atacar(luchador2, luchador1, luchador1.visor);
@@ -338,6 +344,8 @@ function ejecutarDano(a, d, n, dmg, esCritico) {
   log.scrollTop = log.scrollHeight;
 
   if (d.hp <= 0) {
+    const visorDefensor = document.getElementById(`visor-p${n}`);
+    if (visorDefensor) visorDefensor.classList.add('muerto');
     fin(a);
   }
 }
@@ -353,6 +361,11 @@ function actualizarBarra(p, n) {
 
 function fin(ganador) {
   clearInterval(pelea);
+  const visorGanador = document.getElementById(`visor-p${ganador.visor}`);
+  if (visorGanador) {
+    visorGanador.classList.remove('muerto');
+    visorGanador.classList.add('ganador');
+  }
   const esPerfect = ganador.hp === ganador.maxHp;
   const textoPerfect = esPerfect ? ' <br><span style="color: #ffff00; font-size: 2em; text-shadow: 0 0 10px #ff0000; font-family: \'Fuente\', sans-serif;">✨ ¡PERFECT! ✨</span><br>' : '';
   log.innerHTML += `<strong>🏆 GANA ${ganador.nombre}</strong>${textoPerfect}<br><br>`;
