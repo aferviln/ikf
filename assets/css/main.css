@@ -299,11 +299,21 @@ button:active,
     border: 3px solid #600 !important;
     background: rgba(100, 0, 0, 0.3) !important;
     transform: scale(0.95);
-    transition: all 0.8s ease;
+    transition: all 1.5s ease-in-out;
     overflow: hidden;
 }
 
-/* Cruz de Eliminado */
+/* Cruz de Eliminado con animación */
+@keyframes aparecerCruz {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(2) rotate(0deg); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(45deg); }
+}
+
+@keyframes aparecerCruzInv {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(2) rotate(0deg); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-45deg); }
+}
+
 #arena-combate div.muerto::before,
 #arena-combate div.muerto::after {
     content: '';
@@ -311,19 +321,19 @@ button:active,
     top: 50%;
     left: 50%;
     width: 150%;
-    height: 8px;
-    background: rgba(255, 0, 0, 0.7);
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    height: 10px;
+    background: rgba(255, 0, 0, 0.8);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
     z-index: 999;
     pointer-events: none;
 }
 
 #arena-combate div.muerto::before {
-    transform: translate(-50%, -50%) rotate(45deg);
+    animation: aparecerCruz 1s forwards;
 }
 
 #arena-combate div.muerto::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: aparecerCruzInv 1s forwards;
 }
 
 #arena-combate div.ganador {
@@ -333,7 +343,7 @@ button:active,
     transform: scale(1.1) translateY(-10px);
     background: rgba(255, 204, 0, 0.2) !important;
     z-index: 100;
-    transition: all 0.8s ease;
+    transition: all 1.5s ease-in-out;
 }
 
 
